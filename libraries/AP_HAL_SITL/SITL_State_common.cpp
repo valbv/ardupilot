@@ -269,6 +269,12 @@ SITL::SerialDevice *SITL_State_Common::create_serial_sim(const char *name, const
         }
         microstrain5 = new SITL::MicroStrain5();
         return microstrain5;
+    } else if (streq(name, "InertialLabs")) {
+        if (inertialLabs != nullptr) {
+            AP_HAL::panic("Only one InertialLabs at a time");
+        }
+        inertialLabs = new SITL::InertialLabs();
+        return inertialLabs;
 #if HAL_SIM_AIS_ENABLED
     } else if (streq(name, "AIS")) {
         if (ais != nullptr) {
@@ -435,6 +441,10 @@ void SITL_State_Common::sim_update(void)
         microstrain5->update();
     }
 
+    if (inertialLabs != nullptr) {
+        inertialLabs->update();
+    }
+
 #if HAL_SIM_AIS_ENABLED
     if (ais != nullptr) {
         ais->update();
@@ -454,7 +464,7 @@ void SITL_State_Common::update_voltage_current(struct sitl_input &input, float t
 {
     float voltage = 0;
     float current = 0;
-    
+
     if (_sitl != nullptr) {
         if (_sitl->state.battery_voltage <= 0) {
             if (_vehicle == ArduSub) {
@@ -493,4 +503,3 @@ void SITL_State_Common::update_voltage_current(struct sitl_input &input, float t
 }
 
 #endif // HAL_BOARD_SITL
-

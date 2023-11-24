@@ -30,6 +30,7 @@
 #include <SITL/SIM_RF_GYUS42v2.h>
 #include <SITL/SIM_VectorNav.h>
 #include <SITL/SIM_MicroStrain.h>
+#include <SITL/SIM_InertialLabs.h>
 #include <SITL/SIM_AIS.h>
 #include <SITL/SIM_GPS.h>
 
@@ -104,7 +105,7 @@ private:
 
     bool _use_rtscts;
     bool _use_fg_view;
-    
+
     const char *_fg_address;
 
     // internal SITL model
@@ -194,6 +195,9 @@ private:
 
     // simulated MicroStrain Series 5 system
     SITL::MicroStrain5 *microstrain5;
+
+    // simulated InertialLabs system:
+    SITL::InertialLabs *inertialLabs;
 
 #if HAL_SIM_JSON_MASTER_ENABLED
     // Ride along instances via JSON SITL backend

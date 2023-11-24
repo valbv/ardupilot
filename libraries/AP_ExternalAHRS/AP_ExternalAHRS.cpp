@@ -24,6 +24,7 @@
 #include "AP_ExternalAHRS_backend.h"
 #include "AP_ExternalAHRS_VectorNav.h"
 #include "AP_ExternalAHRS_MicroStrain5.h"
+#include "inertialLabs/AP_ExternalAHRS_InertialLabs.h"
 
 #include <GCS_MAVLink/GCS.h>
 
@@ -53,7 +54,7 @@ const AP_Param::GroupInfo AP_ExternalAHRS::var_info[] = {
     // @Param: _TYPE
     // @DisplayName: AHRS type
     // @Description: Type of AHRS device
-    // @Values: 0:None,1:VectorNav,2:MicroStrain
+    // @Values: 0:None,1:VectorNav,2:MicroStrain,3:InertialLabs
     // @User: Standard
     AP_GROUPINFO_FLAGS("_TYPE", 1, AP_ExternalAHRS, devtype, HAL_EXTERNAL_AHRS_DEFAULT, AP_PARAM_FLAG_ENABLE),
 
@@ -77,7 +78,7 @@ const AP_Param::GroupInfo AP_ExternalAHRS::var_info[] = {
     // @Bitmask: 0:GPS,1:IMU,2:Baro,3:Compass
     // @User: Advanced
     AP_GROUPINFO("_SENSORS", 4, AP_ExternalAHRS, sensors, 0xF),
-    
+
     AP_GROUPEND
 };
 
@@ -101,6 +102,11 @@ void AP_ExternalAHRS::init(void)
 #if AP_EXTERNAL_AHRS_MICROSTRAIN5_ENABLED
     case DevType::MicroStrain5:
         backend = new AP_ExternalAHRS_MicroStrain5(this, state);
+        return;
+#endif
+#if AP_EXTERNAL_AHRS_INERTIALLABS_ENABLED
+    case DevType::InertialLabs:
+        backend = new AP_ExternalAHRS_InertialLabs(this, state);
         return;
 #endif
     }
@@ -257,4 +263,3 @@ AP_ExternalAHRS &externalAHRS()
 };
 
 #endif  // HAL_EXTERNAL_AHRS_ENABLED
-

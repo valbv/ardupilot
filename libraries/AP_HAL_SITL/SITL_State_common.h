@@ -34,6 +34,7 @@
 #include <SITL/SIM_RF_GYUS42v2.h>
 #include <SITL/SIM_VectorNav.h>
 #include <SITL/SIM_MicroStrain.h>
+#include <SITL/SIM_InertialLabs.h>
 #include <SITL/SIM_AIS.h>
 #include <SITL/SIM_GPS.h>
 
@@ -103,7 +104,7 @@ public:
     bool new_rc_input;
     uint16_t pwm_output[SITL_NUM_CHANNELS];
     bool output_ready = false;
-    
+
 #if HAL_SIM_GIMBAL_ENABLED
     // simulated gimbal
     bool enable_gimbal;
@@ -200,6 +201,9 @@ public:
     // simulated LORD MicroStrain system
     SITL::MicroStrain5 *microstrain5;
 
+    // simulated InertialLabs system
+    SITL::InertialLabs *inertialLabs;
+
 #if HAL_SIM_JSON_MASTER_ENABLED
     // Ride along instances via JSON SITL backend
     SITL::JSON_Master ride_along;
@@ -218,7 +222,7 @@ public:
 
     // output socket for flightgear viewing
     SocketAPM fg_socket{true};
-    
+
     const char *defaults_path = HAL_PARAM_DEFAULTS_PATH;
 
     // simulated GPS devices
@@ -230,7 +234,7 @@ public:
 
     // multicast state
     int mc_out_fd = -1;
-    
+
     // send out SITL state as UDP multicast
     void multicast_state_open(void);
     void multicast_state_send(void);

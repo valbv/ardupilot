@@ -28,12 +28,15 @@
 #include <AP_NavEKF/AP_Nav_Common.h>
 
 class AP_ExternalAHRS_backend;
+class AP_ExternalAHRS_VectorNav;
+class AP_ExternalAHRS_InertialLabs;
 
 class AP_ExternalAHRS {
 
 public:
     friend class AP_ExternalAHRS_backend;
     friend class AP_ExternalAHRS_VectorNav;
+    friend class AP_ExternalAHRS_InertialLabs;
 
     AP_ExternalAHRS();
 
@@ -48,6 +51,9 @@ public:
 #endif
 #if AP_EXTERNAL_AHRS_MICROSTRAIN5_ENABLED
         MicroStrain5 = 2,
+#endif
+#if AP_EXTERNAL_AHRS_INERTIALLABS_ENABLED
+        InertialLabs = 3,
 #endif
     };
 
@@ -173,4 +179,3 @@ namespace AP {
 };
 
 #endif  // HAL_EXTERNAL_AHRS_ENABLED
-
